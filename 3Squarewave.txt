@@ -1,0 +1,26 @@
+Experiment no. 7
+Aim: To generate square wave using timer of PIC18F with interrupt.
+
+#include<P18F4520.h>
+
+void delay_timer() 
+{
+    T0CON = 0x08;  // Timer 0, 16-bit mode, no prescaler
+    TMR0H = 0xFB;  // Value for 0.1 ms delay
+    TMR0L = 0x50;
+    T0CONbits.TMR0ON = 1;  // Timer 0 On
+    while (INTCONbits.TMR0IF == 0);  // Wait for Timer 0 interrupt flag
+    T0CONbits.TMR0ON = 0;  // Timer 0 Off
+    INTCONbits.TMR0IF = 0;  // Clear Timer 0 interrupt flag
+}
+void main() 
+{
+    TRISCbits.TRISC0 = 0;  // Configure RC0 as output (on PORTC)
+    while (1) 
+    {
+        PORTCbits.RC0 = 1;  // Set RC0 high
+        delay_timer();      // Call delay function
+        PORTCbits.RC0 = 0;  // Set RC0 low
+        delay_timer();      // Call delay function
+    }
+}

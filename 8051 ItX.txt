@@ -1,0 +1,15 @@
+;Name: Mayur Subhash Tamanke
+;Class: TE(b) Roll No: 3402056
+
+ORG 0000H              ; Set the origin of the program to address 0000H
+	MOV R0, #50H       ; Load the value 50H into register R0 (pointer to source data)
+	MOV DPTR, #00H     ; Load the value 00H into DPTR (pointer to destination in external memory)
+	MOV R1, #05H       ; Load the value 05H into register R1 (counter for the loop)
+
+AGAIN: MOV A, @R0      ; Move the value at the address pointed by R0 into accumulator A
+       MOVX @DPTR, A   ; Move the value in accumulator A to the external memory address pointed by DPTR
+       INC R0          ; Increment R0 to point to the next source address
+       INC DPTR        ; Increment DPTR to point to the next destination address
+
+       DJNZ R1, AGAIN  ; Decrement R1 and jump back to AGAIN if R1 is not zero
+END                    ; End of the program
